@@ -20,7 +20,7 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test
     - name: Run Allure collect
-      run: npm allure-collect
+      run: npm run allure-collect
       if: always()
     - uses: actions/upload-artifact@v3
       if: always()
