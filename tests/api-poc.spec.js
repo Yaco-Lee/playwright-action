@@ -2,11 +2,10 @@ const { test, expect } = require('@playwright/test');
 //import {LoginPage} from '../pages/login';
 
 
-test.only('should create a bug report', async ({ request }) => {
+test('should create a bug report', async ({ request }) => {
     const response = await request.get(`https://523fc9d9-e18e-4e0c-8f03-3a0b12a8dcc8.mock.pstmn.io`);
     const dataToJson = await response.json()
     expect(response.ok()).toBeTruthy();
-    console.log("DATA: "+dataToJson)
     expect(dataToJson.data.getWileyBaseProduct.maId == "00101127")
   
     // const issues = await request.get(`/repos/${USER}/${REPO}/issues`);
