@@ -18,7 +18,9 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npm run test
+      run: npx playwright test
+    - name: Run Allure collect
+      run: npm allure-collect
     - uses: actions/upload-artifact@v3
       if: always()
       with:
