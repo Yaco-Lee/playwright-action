@@ -3,7 +3,7 @@ const exp = require('constants');
 import {LoginPage} from '../pages/login';
 
 
-test('TC01_ESTOESUNCAMBIO_verifyRegistrationFromCheckoutPage', async ({ page }) => {
+test('TC01_verifyRegistrationFromCheckoutPage', async ({ page }) => {
   const Login = new LoginPage(page);
   Login.goToCheckoutRegistrationPage();
   expect(page.getByText('Account Login').isVisible());
