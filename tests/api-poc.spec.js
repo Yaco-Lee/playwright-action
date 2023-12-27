@@ -1,51 +1,48 @@
 const { test, expect } = require('@playwright/test');
-//import {LoginPage} from '../pages/login';
 
-
-test('should create a bug report', async ({ request }) => {
-    const response = await request.get(`https://523fc9d9-e18e-4e0c-8f03-3a0b12a8dcc8.mock.pstmn.io`);
-    const dataToJson = await response.json()
-    expect(response.ok()).toBeTruthy();
-    expect(dataToJson.data.getWileyBaseProduct.maId == "00101127")
-  
-    // const issues = await request.get(`/repos/${USER}/${REPO}/issues`);
-    // expect(issues.ok()).toBeTruthy();
-    // expect(await issues.json()).toContainEqual(expect.objectContaining({
-    //   title: '[Bug] report 1',
-    //   body: 'Bug description'
-    // }));
+test('Test viax login with invalid credentials', async ({request, page}) => {
+  const response = await request.post(`https://api.wiley.dev.viax.io/graphql`, {
+    data: {
+      "operationName":"wLogin","variables":{"email":"esteesunemail@yopmail.com","password":"adaadawdawsd","country":"gb"},"query":"mutation wLogin($email: String!, $password: String!, $country: String!) {\n  wLogin(email: $email, password: $password, country: $country)\n}"
+    }
   });
+  const dataToJson = await response.json();
+  expect(response.ok()).toBeTruthy();
+  expect(dataToJson.data.wLogin.result == "ERROR");
+})
+
+test('Test viax login with valid credentials', async ({request, page}) => {
+  const response = await request.post(`https://api.wiley.dev.viax.io/graphql`, {
+    data: {
+      "operationName":"wLogin","variables":{"email":"billfieldtest@gmail.com","password":"testing@123","country":"gb"},"query":"mutation wLogin($email: String!, $password: String!, $country: String!) {\n  wLogin(email: $email, password: $password, country: $country)\n}"
+    }
+  });
+  const dataToJson = await response.json();
+  expect(response.ok()).toBeTruthy();
+  expect(dataToJson.data.wLogin.result).toHaveProperty('almToken');
+  expect(dataToJson.data.wLogin.result).toHaveProperty('viaxToken');
+})
+
+// From here, tests use postman mock server
+
+test('Checks maId is present', async ({ request }) => {
+    const response = await request.get(`https://40a708ab-081b-4038-a980-17ae3b8f85f2.mock.pstmn.io/getWileyBaseProduct`);
+    const dataToJson = await response.json();
+    expect(response.ok()).toBeTruthy();
+    expect(dataToJson.data.getWileyBaseProduct.maId == "00101127");
   
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-// test('api-test-01', async ({page}) => {
-    
-//     await page.route("XXXX", (route) => {
-//         route.fulfill({
-//             status: 200,
-//             contentType: "application/json",
-//             path: "XXXX"
-//         })
-//     })
-
-//     await page.goto("XXXX")
-//     expect(response).not.toBeNull();
-// });
-
-// test.only('Reads API response', async({page}) => {
-//     const Login = new LoginPage(page); 
-//     await Login.goToCheckoutLoginPage();
-//     const response = await page.waitForResponse(res => res.status() === 200);
-//     expect(response).not.toBeNull();
-//     expect(response.status()).toBe(200);
-// });
+  test('Checks Approval status for product variant', async ({ request }) => {
+    const response = await request.get(`https://40a708ab-081b-4038-a980-17ae3b8f85f2.mock.pstmn.io/getWileyProductVariant`);
+    const dataToJson = await response.json();
+    expect(response.ok()).toBeTruthy();
+    expect(dataToJson.data.getWileyProductVariant.wApprovalStatus == "APPROVED");
+  })
+  
+  test('Checks number of wClassificationAttributes', async ({ request }) => {
+    const response = await request.get(`https://40a708ab-081b-4038-a980-17ae3b8f85f2.mock.pstmn.io/getWileyProductVariant`);
+    const dataToJson = await response.json();
+    expect(response.ok()).toBeTruthy();
+    expect(dataToJson.data.getWileyProductVariant.wClassificationAttributes.lenght == 3);
+  })
