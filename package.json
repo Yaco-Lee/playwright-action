@@ -7,7 +7,8 @@
     "allure:generate": "npx allure generate ./allure-results --clean",
     "allure:open": "npx allure open ./allure-report",
     "allure:serve": "npx allure serve",
-    "test": "npx playwright test tests/poc.spec.js --headed",
+    "test": "npx playwright test tests/poc.spec.js",
+    "test:headed": "npx playwright test tests/poc.spec.js --headed",
     "test:ui": "npx playwright test tests/poc.spec.js --ui", 
     "test:api": "npx playwright test tests/api-poc.spec.js",
     "posttest": "npm run allure:generate"
