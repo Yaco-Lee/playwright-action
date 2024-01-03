@@ -50,7 +50,7 @@ jobs:
         keep_reports: 20
 
     - name: Take config file
-      run: echo "ENV=QA" >> ./allure-results/environment.properties
+      run: echo "ENV=QA" >> ./allure-history/environment.properties
 
 
     - name: Deploy report to Github Pages
