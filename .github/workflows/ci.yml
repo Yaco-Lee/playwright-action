@@ -31,7 +31,8 @@ jobs:
         retention-days: 20
 
     - name: Take config file
-      run: echo "ENV=QA" >> ./allure-results/environment.properties
+      run: cp "./qa.config" "./allure-results/environment.properties"
+      # run: echo "ENV=QA" >> ./allure-results/environment.properties
         
     - name: Get Allure history
       uses: actions/checkout@v2
