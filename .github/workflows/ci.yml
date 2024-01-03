@@ -2,9 +2,9 @@ name: ci
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, dev ]
 
   workflow_dispatch:
 
@@ -30,9 +30,13 @@ jobs:
         path: allure-results
         retention-days: 20
 
-    - name: Take config file
-      run: cp "./qa.config" "./allure-results/environment.properties"
-      # run: echo "ENV=QA" >> ./allure-results/environment.properties
+    - name: Run on Main Branch
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: cp "./prod.config" "./allure-results/environment.properties"
+
+    - name: Run on Dev Branch
+      if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+      run: cp "./dev.config" "./allure-results/environment.properties"
         
     - name: Get Allure history
       uses: actions/checkout@v2
