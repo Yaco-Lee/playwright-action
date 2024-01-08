@@ -1,6 +1,11 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 const { test, expect } = require('@playwright/test');
-const exp = require('constants');
-import {LoginPage} from '../pages/login';
+const testData = require('../utils/testData.json');
+const fieldValidation = require('../utils/fieldValidation.json');
+import {LoginPage} from '../pageObjects/login';
+import { allure } from "allure-playwright";
+
 
 
 test('TC01_verifyRegistrationFromCheckoutPage', async ({ page }) => {
@@ -9,12 +14,12 @@ test('TC01_verifyRegistrationFromCheckoutPage', async ({ page }) => {
   expect(page.getByText('Account Login').isVisible());
   await Login.create_new_account_btn.click();
   expect(page.locator('span').filter({ hasText: /^Create Account$/ }).isVisible());
-  await Login.first_name_tbox.fill('Lisa');
-  await Login.last_name_tbox.fill('Simpson');
-  await Login.new_user_email_tbox.fill('thisisanemail3@yopmail.com');
-  await Login.confirm_email_tbox.fill('thisisanemail3@yopmail.com');
-  await Login.password_tbox.fill('thisPassword@testing');
-  await Login.confirm_password_tbox.fill('thisPassword@testing');
+  await Login.first_name_tbox.fill(testData.newUserFirstName);
+  await Login.last_name_tbox.fill(testData.newUserLastName);
+  await Login.new_user_email_tbox.fill(testData.newUserEmail);
+  await Login.confirm_email_tbox.fill(testData.newUserEmail);
+  await Login.password_tbox.fill(testData.newUserPwd);
+  await Login.confirm_password_tbox.fill(testData.newUserPwd);
   expect(page.getByRole('button', { name: 'Create Account' }).isEnabled());
 
 });
@@ -29,13 +34,15 @@ test('TC02_verifyLoginFromCheckoutPage', async ({ page }) => {
   // await page.pause()
 });
 
-test('TC03_verifyLoginFromLoginPage', async ({ page }) => {
+test.only('TC03_verifyLoginFromLoginPage', async ({ page }) => {
   test.setTimeout(120000);
   const Login = new LoginPage(page);
   await Login.goToCheckoutRegistrationPage();
   expect( page.getByRole('button',{name: 'Log In'}).isDisabled());
-  await Login.user_email_tbox.fill('billfieldtest@gmail.com');
-  await Login.password_tbox.fill('testing@123');
+  //await Login.user_email_tbox.fill('billfieldtest@gmail.com');
+  await Login.user_email_tbox.fill(process.env.USERNAME_DEV);
+  //await Login.password_tbox.fill('testing@123');
+  await Login.password_tbox.fill(process.env.PWD_DEV);
   await Login.login_btn.click();
   await Login.edit_btn.click();
   expect( page.getByRole('button',{name: 'Log In'}).isVisible());
@@ -55,12 +62,12 @@ test('TC04_verifyRegistrationFieldValidationOnCheckout', async ({ page }) => {
   await Login.confirm_email_tbox.fill('');
   await Login.password_tbox.fill('');
   await Login.confirm_password_tbox.fill('');
-  expect(page.getByText('First Name is required.'))
-  expect(page.getByText('Last Name is required.'))
-  expect(page.getByText('Email is required.', { exact: true }))
-  expect(page.getByText('Confirmed email is required.'))
-  expect(page.getByText('Password is required.'))
-  expect(page.getByText('Confirmed password is'))
+  expect(page.getByText(fieldValidation.firstNameReq))
+  expect(page.getByText(fieldValidation.lastNameReq))
+  expect(page.getByText(fieldValidation.emailReq, { exact: true }))
+  expect(page.getByText(fieldValidation.confEmailReq))
+  expect(page.getByText(fieldValidation.pwdReq))
+  expect(page.getByText(fieldValidation.confPwdReq))
   expect(page.getByRole('button', { name: 'Create Account' }).isDisabled());
   // await page.pause();
 });

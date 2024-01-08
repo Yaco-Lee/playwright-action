@@ -9,7 +9,7 @@
     "allure:serve": "npx allure serve",
     "test": "npx playwright test tests/poc.spec.js",
     "test:headed": "npx playwright test tests/poc.spec.js --headed",
-    "test:ui": "npx playwright test tests/poc.spec.js --ui", 
+    "test:ui": "npx playwright test tests/poc.spec.js --ui",
     "test:api": "npx playwright test tests/api-poc.spec.js",
     "posttest": "npm run allure:generate"
   },
@@ -21,5 +21,8 @@
     "@types/node": "^20.10.3",
     "allure-commandline": "^2.25.0",
     "allure-playwright": "^2.9.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
   }
 }

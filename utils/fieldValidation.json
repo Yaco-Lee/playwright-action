@@ -1,0 +1,8 @@
+{
+	"firstNameReq":"First Name is required.",
+	"lastNameReq":"Last Name is required.",
+	"emailReq":"Email is required.",
+	"confEmailReq":"Confirmed email is required.",
+	"pwdReq":"Password is required.",
+	"confPwdReq":"Confirmed password is"
+}
