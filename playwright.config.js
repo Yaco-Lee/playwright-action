@@ -1,5 +1,6 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
+import * as os from 'os'
 
 /**
  * Read environment variables from file.
@@ -28,7 +29,9 @@ module.exports = defineConfig({
         {
           outputFolder: 'allure-results', 
           environmentInfo: {
-              E2E_NODE_VERSION: process.version, E2E_OS: process.platform
+              NODE_VERSION: process.version, 
+              OS: process.platform, 
+              OS_RELEASE: os.release()
               },
             }
           ]
