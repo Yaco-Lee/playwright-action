@@ -34,7 +34,7 @@ test('TC02_verifyLoginFromCheckoutPage', async ({ page }) => {
   // await page.pause()
 });
 
-test.only('TC03_verifyLoginFromLoginPage', async ({ page }) => {
+test('TC03_verifyLoginFromLoginPage', async ({ page }) => {
   test.setTimeout(120000);
   const Login = new LoginPage(page);
   await Login.goToCheckoutRegistrationPage();
